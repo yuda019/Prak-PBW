@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Konversi Mata Uang</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Kalkulator Konversi Mata Uang</h2>
+        <form id="currencyForm">
+            <div class="form-group">
+                <label for="fromCurrency">Dari Mata Uang:</label>
+                <select id="fromCurrency" class="form-control">
+                    <option value="BHD">Bahraini Dinar (BHD)</option>
+                    <option value="USD">Dolar AS (USD)</option>
+                    <option value="EUR">Euro (EUR)</option>
+                    <option value="JPY">Yen Jepang (JPY)</option>
+                    <option value="IDR">Rupiah Indonesia (IDR)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="toCurrency">Ke Mata Uang:</label>
+                <select id="toCurrency" class="form-control">
+                    <option value="BHD">Bahraini Dinar (BHD)</option>
+                    <option value="USD">Dolar AS (USD)</option>
+                    <option value="EUR">Euro (EUR)</option>
+                    <option value="JPY">Yen Jepang (JPY)</option>
+                    <option value="IDR">Rupiah Indonesia (IDR)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="amount">Jumlah:</label>
+                <input type="number" id="amount" class="form-control" placeholder="Masukkan jumlah" required>
+            </div>
+            <button type="button" class="btn" onclick="convertCurrency()">Hitung Konversi</button>
+        </form>
+        <div id="result" class="result"></div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
