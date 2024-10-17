@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB VALIDASI FORM</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        form {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <form id="myForm" action="sandi permana yuda3.html" method="post">
+        <h1>Praktikum 4</h1>
+        <h2>#2. Warning Validasi Batasan Inputan</h2>
+        <br>
+        <br>Nama_Kalian
+        <br>
+        <label for="username">Username</label>
+        <input type="text" name="username" placeholder="Masukkan Username Mu">
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById("myForm").onsubmit = function() {
+            return validasi_input(this);
+        };
+
+        function validasi_input(form) {
+            var mincar = 5;
+            if (form.username.value === "") {
+                alert("Username masih kosong");
+                form.username.focus();
+                return false;
+            } else if (form.username.value.length < mincar) {
+                alert("Panjang username minimal 5 karakter!");
+                form.username.focus();
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB VALIDASI FORM</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        form {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <form id="myForm" action="https://trisakti.ac.id/" method="post">
+        <h1>Praktikum 4</h1>
+        <h2>#4. Warning Validasi Pilihan Radio pada Button<br>-----<br>Sandi permana yuda</h2>
+        <label for="username">Username</label>
+        <input type="text" name="username" placeholder="Masukan Username Mu">
+        <br> 
+        <label for="sex">Jenis kelamin :</label>  
+        <input type="radio" name="jk" value="L" id="lk">
+        <label for="lk">Laki-laki</label>
+        <input type="radio" name="jk" value="P" id="pr">
+        <label for="pr">Perempuan</label>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById("myForm").onsubmit = function() {
+            return validasi_input(this);
+        };
+        function validasi_input(form) {
+            mincar = 5;
+            pola_username = /^[a-zA-Z0-9\_\-]{6,100}$/;
+            if (form.username.value === "") {
+                alert("Username masih kosong");
+                form.username.focus();
+                return false;
+            } else if (form.username.value.length < mincar) {
+                alert("Panjang username minimal 5 karakter!");
+                form.username.focus();
+                return (false);
+            } else if (!pola_username.test(form.username.value)) {
+                alert("Username minimal 6 karakter dan hanya boleh huruf atau angka");
+                form.username.focus();
+                return (false);
+            }if (!form.jk.value) {
+                alert("Anda belum memilih jenis kelamin");
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+
+</html>
