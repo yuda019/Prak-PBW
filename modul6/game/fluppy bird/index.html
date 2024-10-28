@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flappy Bird Sederhana</title>
+    <style>
+        body { display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #70c5ce; }
+        #gameArea { position: relative; width: 300px; height: 500px; background: #88e2ff; overflow: hidden; border: 2px solid #333; }
+        #bird { width: 30px; height: 30px; background: yellow; position: absolute; top: 200px; left: 50px; border-radius: 50%; }
+        .pipe { width: 50px; position: absolute; right: -50px; background: green; }
+        .pipeTop { height: 200px; top: 0; }
+        .pipeBottom { height: 200px; bottom: 0; }
+        h1, p { text-align: center; color: white; }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div id="gameArea">
+        <div id="bird"></div>
+    </div>
+    <h1>Flappy Bird</h1>
+    <p>Score: <span id="score">0</span></p>
+
+    <script>
+        $(document).ready(function() {
+            let gravity = 2, birdTop = parseInt($('#bird').css('top')), isGameOver = false;
+            let score = 0, gameInterval, pipeInterval;
+
+            // Function to make bird jump
+            $(document).on('keydown', function(e) {
+                if (e.key === ' ') birdTop -= 40; 
+            });
+
+            // Bird falling
+            function moveBird() {
+                birdTop += gravity;
+                $('#bird').css('top', birdTop);
+                if (birdTop < 0 || birdTop > $('#gameArea').height()) endGame();
+            }
+
+            // Create pipes
+            function createPipes() {
+                const pipeHeight = Math.floor(Math.random() * 200) + 50;
+                const gap = 150;
+                const pipeTop = $('<div class="pipe pipeTop"></div>').css({ height: pipeHeight + 'px' });
+                const pipeBottom = $('<div class="pipe pipeBottom"></div>').css({ height: $('#gameArea').height() - pipeHeight - gap + 'px' });
+                $('#gameArea').append(pipeTop, pipeBottom);
+
+                pipeTop.css('right', '-50px');
+                pipeBottom.css('right', '-50px').css('top', pipeHeight + gap + 'px');
+
+                const pipeMoveInterval = setInterval(() => {
+                    if (isGameOver) clearInterval(pipeMoveInterval);
+
+                    const pipePos = parseInt(pipeTop.css('right'));
+                    if (pipePos > $('#gameArea').width()) {
+                        pipeTop.remove();
+                        pipeBottom.remove();
+                        score++;
+                        $('#score').text(score);
+                        clearInterval(pipeMoveInterval);
+                    } else {
+                        pipeTop.css('right', pipePos + 5 + 'px');
+                        pipeBottom.css('right', pipePos + 5 + 'px');
+                    }
+
+                    checkCollision(pipeTop);
+                    checkCollision(pipeBottom);
+                }, 20);
+            }
+
+            // Check collision
+            function checkCollision(pipe) {
+                const birdPos = $('#bird').position();
+                const pipePos = pipe.position();
+                const birdHeight = $('#bird').height();
+                const birdWidth = $('#bird').width();
+                const pipeHeight = pipe.height();
+                const pipeWidth = pipe.width();
+
+                if (
+                    birdPos.top < pipePos.top + pipeHeight &&
+                    birdPos.top + birdHeight > pipePos.top &&
+                    birdPos.left < pipePos.left + pipeWidth &&
+                    birdPos.left + birdWidth > pipePos.left
+                ) {
+                    endGame();
+                }
+            }
+
+            // End game
+            function endGame() {
+                clearInterval(gameInterval);
+                clearInterval(pipeInterval);
+                isGameOver = true;
+                alert("Game Over! Skor Anda: " + score);
+            }
+
+            // Game start
+            gameInterval = setInterval(moveBird, 20);
+            pipeInterval = setInterval(createPipes, 2000);
+        });
+    </script>
+</body>
+</html>
