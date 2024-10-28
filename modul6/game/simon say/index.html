@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simon Says Game</title>
+    <style>
+        #gameArea { display: grid; grid-template-columns: repeat(2, 100px); grid-gap: 10px; width: 220px; margin: auto; }
+        .colorBox { width: 100px; height: 100px; cursor: pointer; opacity: 0.7; transition: opacity 0.3s; }
+        .red { background-color: red; }
+        .green { background-color: green; }
+        .blue { background-color: blue; }
+        .yellow { background-color: yellow; }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Simon Says</h1>
+    <p>Score: <span id="score">0</span></p>
+    <div id="gameArea">
+        <div class="colorBox red"></div>
+        <div class="colorBox green"></div>
+        <div class="colorBox blue"></div>
+        <div class="colorBox yellow"></div>
+    </div>
+    <button id="startGame">Mulai Game</button>
+
+    <script>
+        $(document).ready(function() {
+            let pattern = [], playerPattern = [], score = 0;
+
+            function flashColor(color) {
+                $('.' + color).css('opacity', '1');
+                setTimeout(() => { $('.' + color).css('opacity', '0.7'); }, 400);
+            }
+
+            function playPattern() {
+                playerPattern = [];
+                let i = 0;
+                const interval = setInterval(() => {
+                    flashColor(pattern[i]);
+                    i++;
+                    if (i >= pattern.length) clearInterval(interval);
+                }, 600);
+            }
+
+            function nextRound() {
+                score++;
+                $('#score').text(score);
+                pattern.push(['red', 'green', 'blue', 'yellow'][Math.floor(Math.random() * 4)]);
+                playPattern();
+            }
+
+            function checkPattern() {
+                for (let i = 0; i < playerPattern.length; i++) {
+                    if (playerPattern[i] !== pattern[i]) return endGame();
+                }
+                if (playerPattern.length === pattern.length) setTimeout(nextRound, 800);
+            }
+
+            function endGame() {
+                alert("Game Over! Skor Anda: " + score);
+                pattern = [];
+                score = 0;
+                $('#score').text(score);
+            }
+
+            $('.colorBox').click(function() {
+                const color = $(this).attr('class').split(' ')[1];
+                playerPattern.push(color);
+                flashColor(color);
+                checkPattern();
+            });
+
+            $('#startGame').click(nextRound);
+        });
+    </script>
+</body>
+</html>
