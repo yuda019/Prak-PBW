@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulir Pendaftaran</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="button-group">
+        <button id="showFormButton">Formulir Pendaftaran</button>
+        <button id="showDataButton">Data Pendaftar</button>
+    </div>
+
+    <div class="container form-container" id="formContainer">
+        <h2>Formulir Pendaftaran</h2>
+        <form id="formPendaftaran">
+            <label for="nama">Nama:</label>
+            <input type="text" id="nama" placeholder="Masukkan Nama">
+            <div class="error-message" id="namaError">Nama tidak boleh kosong!</div>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="Masukkan Email">
+            <div class="error-message" id="emailError">Email tidak boleh kosong!</div>
+
+            <label for="telepon">Nomor Telepon:</label>
+            <input type="tel" id="telepon" placeholder="Masukkan Nomor Telepon">
+            <div class="error-message" id="teleponError">Nomor telepon tidak boleh kosong!</div>
+
+            <label for="alamat">Alamat:</label>
+            <input type="text" id="alamat" placeholder="Masukkan Alamat">
+            <div class="error-message" id="alamatError">Alamat tidak boleh kosong!</div>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="container data-container" id="dataContainer">
+        <h2>Data Pendaftar</h2>
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>Telepon</th>
+                    <th>Alamat</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="noDataRow">
+                    <td colspan="5" style="text-align: center;">Belum ada data yang di-submit.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            let dataCounter = 1;
+
+            $("#showFormButton").on("click", function () {
+                $("#formContainer").show();
+                $("#dataContainer").hide();
+            });
+
+            $("#showDataButton").on("click", function () {
+                $("#dataContainer").show();
+                $("#formContainer").hide();
+            });
+
+            $("#formPendaftaran").on("submit", function (e) {
+                e.preventDefault();
+                let isValid = true;
+
+                $("#formPendaftaran input").each(function () {
+                    const $input = $(this);
+                    const value = $input.val().trim();
+                    const errorId = "#" + $input.attr("id") + "Error";
+
+                    if (!value) {
+                        $input.addClass("error");
+                        $(errorId).show();
+                        isValid = false;
+                    } else {
+                        $input.removeClass("error");
+                        $(errorId).hide();
+                    }
+                });
+
+                if (isValid) {
+                    const nama = $("#nama").val();
+                    const email = $("#email").val();
+                    const telepon = $("#telepon").val();
+                    const alamat = $("#alamat").val();
+
+                    const newRow = `
+                        <tr>
+                            <td>${dataCounter++}</td>
+                            <td>${nama}</td>
+                            <td>${email}</td>
+                            <td>${telepon}</td>
+                            <td>${alamat}</td>
+                        </tr>
+                    `;
+
+                    $("#noDataRow").remove();
+                    $("#dataTable tbody").append(newRow);
+
+                    this.reset();
+                    alert("Formulir berhasil disubmit!");
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
